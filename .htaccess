@@ -1,1 +1,1 @@
-Redirect /idm /get.ps1
+RedirectMatch 301 ^/idm/?$ /get.ps1
