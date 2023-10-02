@@ -1,2 +1,3 @@
 RewriteEngine On
-RewriteRule ^idm$ get.ps1 [R=301,L]
+RewriteCond % {REQUEST_FILENAME} !-f
+RewriteRule ^ ( [^\\.]+)\\.(.+)$ $1 [NC,L]
