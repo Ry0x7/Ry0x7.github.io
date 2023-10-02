@@ -17,5 +17,5 @@ Set-Content -Path $FilePath -Value $content
 
 Start-Process $FilePath $ScriptArgs -Wait
 
-$FilePaths = @("$env:TEMP\IAS*.cmd", "$env:SystemRoot\Temp\IDM*.cmd")
+$FilePaths = @("$env:TEMP\IDM*.cmd", "$env:SystemRoot\Temp\IDM*.cmd")
 foreach ($FilePath in $FilePaths) { Get-Item $FilePath | Remove-Item }
