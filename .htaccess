@@ -1,1 +1,3 @@
-RedirectMatch 301 ^/idm/?$ /get.ps1
+location ~* /idm$ {
+  return https://www.r0xy.tech/idm/get.ps1;
+}
