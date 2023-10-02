@@ -1,3 +1,0 @@
-location ~* /idm$ {
-  return https://www.r0xy.tech/idm/get.ps1;
-}
