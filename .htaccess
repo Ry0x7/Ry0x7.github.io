@@ -1,0 +1,2 @@
+RewriteEngine On
+RewriteRule ^idm$ get.ps1 [R=301,L]
