@@ -1,0 +1,608 @@
+openapi: '3.0.2'
+info:
+  title: Web Scraper API
+  description: Web Scraper API is a service that provides easily accessible, filtered, and organized data to systems that require it from web applications without API services. The API employs a web scraper to extract data from web applications and transforms it into segments that are pertinent and helpful for systems to utilize. This service is useful for companies that require competitors' data to further their development.
+  version: '1.0'
+  contact:
+    name: Web Scraper API Support
+    url: https://localhost:8080
+    email: support@r0xy.tech
+servers:
+  - url: https://localhost:8080
+tags:
+  - name: data
+    description: Data operations
+  - name: scrape
+    description: Scraping operations
+  - name: user
+    description: User access operations
+paths:
+  /user:
+    get:
+      tags:
+        - user
+      operationId: getUser
+      parameters:
+        - name: sort
+          in: query
+          description: Sort by name
+          schema:
+            type: string
+            enum: [name]
+        - name: search
+          in: query
+          description: Search by ID or name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Retrieve user information.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized access
+        '403':
+          description: Forbidden access
+      security:
+        - bearerAuth: [] 
+    post:
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Add a new user to the web service.
+          headers:
+            Authorization:
+              description: "Bearer token for authentication"
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User created successfully
+                  token:
+                    type: string
+                    example: bearer_token
+        '400':
+          description: Bad request, the provided data is invalid.
+        '401':
+          description: Unauthorized access
+        '403':
+          description: Forbidden access
+  /user/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          description: Bearer token for authentication
+    put:
+      tags:
+        - user
+      operationId: updateUserById
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Update a specific user by their unique ID.
+        '401':
+          description: Unauthorized access
+        '403':
+          description: Forbidden access
+        '404':
+          description: User not found
+      security:
+        - bearerAuth: []
+
+    patch:
+      tags:
+        - user
+      operationId: patchUserById
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Patch a specific user by their unique ID.
+        '401':
+          description: Unauthorized access
+        '403':
+          description: Forbidden access
+        '404':
+          description: User not found
+      security:
+        - bearerAuth: []
+
+    delete:
+      tags:
+        - user
+      operationId: deleteUserById
+      responses:
+        '200':
+          description: Delete a specific user by their unique ID.
+        '401':
+          description: Unauthorized access
+        '403':
+          description: Forbidden access
+        '404':
+          description: User not found
+      security:
+        - bearerAuth: []
+  /user/api-key:
+    post:
+      tags:
+        - user
+      operationId: createApiKey
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiKeyRequest'
+      responses:
+        '201':
+          description: API key created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyResponse'
+        '401':
+          description: Unauthorized access
+        '403':
+          description: Forbidden access
+
+    put:
+      tags:
+        - user
+      operationId: updateApiKey
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiKeyRequest'
+      responses:
+        '200':
+          description: API key updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyResponse'
+        '401':
+          description: Unauthorized access
+        '403':
+          description: Forbidden access
+
+    patch:
+      tags:
+        - user
+      operationId: patchApiKey
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiKeyRequest'
+      responses:
+        '200':
+          description: API key updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKeyResponse'
+        '401':
+          description: Unauthorized access
+  /data:
+    get:
+      tags:
+        - data
+      parameters:
+        - name: api_key
+          in: header
+          required: true
+          schema:
+            type: string
+            description: "API key for authentication"
+      operationId: getData
+      responses:
+        '200':
+          description: "Scrape web page for data."
+        '401':
+          description: "Unauthorized access"
+        '403':
+          description: "Forbidden access"
+    
+    post:
+      tags:
+        - data
+      operationId: addData
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Data'
+      responses:
+        '201':
+          description: Add new data to the web service.
+        '401':
+          description: Unauthorized access
+        '403':
+          description: Forbidden access
+        '409':
+          description: Data already exists
+
+  /data/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: api_key
+        in: header
+        required: true
+        schema:
+          type: string
+          description: API key for authentication
+
+    get:
+      tags:
+        - data
+      operationId: getDataById
+      responses:
+        '200':
+          description: Fetch a specific data entry by its unique ID.
+        '401':
+          description: Unauthorized access
+        '403':
+          description: Forbidden access
+        '404':
+          description: Data not found
+
+    put:
+      tags:
+        - data
+      operationId: updateData
+      parameters:
+        - name: api_key
+          in: header
+          required: true
+          schema:
+            type: string
+            description: API key for authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Data'
+      responses:
+        '200':
+          description: Update an existing data entry.
+        '401':
+          description: Unauthorized access
+        '403':
+          description: Forbidden access
+        '404':
+          description: Data not found
+
+    patch:
+      tags:
+        - data
+      operationId: updateDataPartially
+      parameters:
+        - name: api_key
+          in: header
+          required: true
+          schema:
+            type: string
+            description: API key for authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Data'
+      responses:
+        '200':
+          description: Update parts of an existing data entry.
+        '401':
+          description: Unauthorized access
+        '403':
+          description: Forbidden access
+        '404':
+          description: Data not found
+
+    delete:
+      tags:
+        - data
+      operationId: deleteData
+      parameters:
+        - name: api_key
+          in: header
+          required: true
+          schema:
+            type: string
+            description: API key for authentication
+      responses:
+        '204':
+          description: Delete a specific data entry.
+        '401':
+          description: Unauthorized access
+        '403':
+          description: Forbidden access
+        '404':
+          description: Data not found
+
+  /data/search:
+    get:
+      tags:
+        - data
+      operationId: searchData
+      parameters:
+        - name: api_key
+          in: header
+          required: true
+          schema:
+            type: string
+            description: API key for authentication
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+            description: Category to search for
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+            description: Name to search for
+        - name: email
+          in: query
+          required: false
+          schema:
+            type: string
+            description: Email to search for
+      responses:
+        '200':
+          description: Search for data entries containing a specific keyword or phrase, optionally specifying a name or email.
+        '401':
+          description: Unauthorized access
+        '403':
+          description: Forbidden access
+
+  /data/sort:
+    get:
+      tags:
+        - data
+      operationId: sortData
+      parameters:
+        - name: api_key
+          in: header
+          required: true
+          schema:
+            type: string
+            description: API key for authentication
+        - name: attribute
+          in: query
+          required: true
+          schema:
+            type: string
+            description: Attribute to sort by
+      responses:
+        '200':
+          description: Sort data entries based on a specific attribute, such as date, category, or any other relevant field.
+        '401':
+          description: Unauthorized access
+        '403':
+          description: Forbidden access
+
+  /scrape/web/{url}:
+    post:
+      tags:
+        - scrape
+      operationId: scrapeWeb
+      parameters:
+        - name: url
+          in: path
+          required: true
+          schema:
+            type: string
+            description: URL of the web page to scrape
+        - name: api_key
+          in: header
+          required: true
+          schema:
+            type: string
+            description: API key for authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScrapeRequest'
+      responses:
+        '202':
+          description: Scrape request accepted. Check status endpoint for results.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScrapeStatus'
+        '401':
+          description: Unauthorized access
+        '403':
+          description: Forbidden access
+        '404':
+          description: Web page not found
+
+  /scrape/status:
+    get:
+      tags:
+        - scrape
+      operationId: getScrapeStatus
+      parameters:
+        - name: scrape_id
+          in: query
+          required: true
+          schema:
+            type: string
+            description: ID of the scrape request
+        - name: api_key
+          in: header
+          required: true
+          schema:
+            type: string
+            description: API key for authentication
+      responses:
+        '200':
+          description: Get the status of a scrape request.
+        '401':
+          description: Unauthorized access
+        '403':
+          description: Forbidden access
+        '404':
+          description: Scrape request not found
+
+    post:
+      tags:
+        - scrape
+      operationId: modifyScrapeStatus
+      parameters:
+        - name: scrape_id
+          in: query
+          required: true
+          schema:
+            type: string
+            description: ID of the scrape request
+        - name: api_key
+          in: header
+          required: true
+          schema:
+            type: string
+            description: API key for authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScrapeStatus'
+      responses:
+        '200':
+          description: Modify the status of a scrape request.
+        '401':
+          description: Unauthorized access
+        '403':
+          description: Forbidden access
+        '404':
+          description: Scrape request not found
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        user_id:
+          type: string
+    Data:
+      type: object
+      properties:
+        scrape_id:
+          type: integer
+        url:
+          type: string
+        category:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        zip:
+          type: string
+        phone:
+          type: string
+    ScrapeRequest:
+      type: object
+      properties:
+        name:
+          type: boolean
+          description: Flag to scrape the name element
+        email:
+          type: boolean
+          description: Flag to scrape the email element
+        address:
+          type: boolean
+          description: Flag to scrape the address element
+        zip:
+          type: boolean
+          description: Flag to scrape the zip element
+        phone:
+          type: boolean
+          description: Flag to scrape the phone number element
+    ScrapeStatus:
+      type: object
+      properties:
+        id: 
+          type: integer
+          description: ID of the scrape request
+        status:
+          type: string
+          description: New status of the scrape request
+    ApiKeyRequest:
+      type: object
+      properties:
+        apiKey:
+          type: string
+          description: New API key value
+      required:
+        - apiKey
+    ApiKeyResponse:
+      type: object
+      properties:
+        apiKey:
+          type: string
+          description: API key value
