@@ -87,12 +87,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: Authorization
-        in: header
-        required: true
-        schema:
-          type: string
-          description: Bearer token for authentication
     put:
       tags:
         - user
