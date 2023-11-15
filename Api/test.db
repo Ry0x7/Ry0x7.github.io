@@ -12,6 +12,8 @@ db.warehouses.insertMany([ // Insert the data
     {carrierCode: "6100231 - Express Cargo", warehouse: "Bacolod"}
 ]);
 
+db.createCollection("clients")
+
 db.clients.insertMany([
     {clientCode: 4013, clientName: "Mondi Group", city: "Cebu", country: "Philippines"},
     {clientCode: 4014, clientName: "BP Southern Africa", city: "Cebu", country: "Philippines"},
@@ -29,6 +31,8 @@ db.clients.insertMany([
     {clientCode: 4252, clientName: "Choppies Enterprises", city: "Kuala Lumpur", country: "Malaysia"},
     {clientCode: 4167, clientName: "Stanbic Bank Malaysia", city: "Kuala Lumpur", country: "Malaysia"}
 ]);
+
+db.createCollection("invoices")
 
 db.invoices.insertMany([
     {invoicingDate: new Date("2021-01-02"), invoiceNumber: 10414, originWarehouse: "WHDUR", originCity: "Davao", originCountry: "Philippines", customerCode: 4014, invoiceValue: 1212.8, numberOfPackages: 3, grossWeight: 49.5, carrierCode: "6600879", transportType: "Urgent", contractedTerm: 7, collectionDate: new Date("2021-01-03"), deliveryDate: new Date("2021-01-13"), event: "Damaged"},
@@ -55,3 +59,19 @@ db.invoices.insertMany([
     {invoicingDate: new Date("2022-10-16"), invoiceNumber: 12870, originWarehouse: "WHDUR", originCity: "Davao", originCountry: "Philippines", customerCode: 4257, invoiceValue: 58.49, numberOfPackages: 1, grossWeight: 0.321, carrierCode: "6500948", transportType: "Conventional", contractedTerm: 9, collectionDate: new Date("2022-10-16"), deliveryDate: new Date("2022-10-21"), event: "None"},
     {invoicingDate: new Date("2022-11-20"), invoiceNumber: 13030, originWarehouse: "WHCPT", originCity: "Cebu", originCountry: "Philippines", customerCode: 4252, invoiceValue: 12061.74, numberOfPackages: 7, grossWeight: 23.188, carrierCode: "6400835", transportType: "Conventional", contractedTerm: 7, collectionDate: new Date("2022-11-20"), deliveryDate: new Date("2022-11-27"), event: "None"}
 ]);
+
+db.invoices.find({}, {originCountry: 1, originCity: 1, customerCode: 1});
+
+db.invoices.find({}, {carrierCode: 1});
+
+db.invoices.count({$or: [{event: "Damaged"}, {event: "Loss"}]});
+
+db.clients.find({clientCode: {$in: db.invoices.distinct('customerCode')}});
+
+db.invoices.aggregate([{$group: {_id: "$customerCode", count: {$sum: 1}}}]);
+
+db.invoices.aggregate([{$group: {_id: "$customerCode", totalValue: {$sum: "$invoiceValue"}}}]);
+
+db.invoices.aggregate([{$group: {_id: "$originWarehouse", count: {$sum: 1}}}]);
+
+db.invoices.distinct("originCountry", {originWarehouse: {$exists: true}});
