@@ -1,0 +1,57 @@
+use deliveryDB; // Create or switch to the database
+
+db.createCollection("warehouses"); // Create a new collection
+
+db.warehouses.insertMany([ // Insert the data
+    {carrierCode: "6700091 - Delivery Express", warehouse: "Kuala Lumpur"},
+    {carrierCode: "6900304 - Cargo Now", warehouse: "Singapore"},
+    {carrierCode: "6600879 - Fast Max", warehouse: "Manila"},
+    {carrierCode: "6140092 - Always Co", warehouse: "Cebu"},
+    {carrierCode: "6400835 - Faster Delivery", warehouse: "Davao"},
+    {carrierCode: "6500948 - Now Package", warehouse: "Quezon"},
+    {carrierCode: "6100231 - Express Cargo", warehouse: "Bacolod"}
+]);
+
+db.clients.insertMany([
+    {clientCode: 4013, clientName: "Mondi Group", city: "Cebu", country: "Philippines"},
+    {clientCode: 4014, clientName: "BP Southern Africa", city: "Cebu", country: "Philippines"},
+    {clientCode: 4019, clientName: "Game Stores", city: "Cebu", country: "Philippines"},
+    {clientCode: 4020, clientName: "Rhodes Food Group", city: "Manila", country: "Philippines"},
+    {clientCode: 4022, clientName: "Rainbow Chicken", city: "Bacolod", country: "Philippines"},
+    {clientCode: 4033, clientName: "Woolworths Holdings Limited", city: "Manila", country: "Philippines"},
+    {clientCode: 4037, clientName: "Woolworths", city: "Manila", country: "Philippines"},
+    {clientCode: 4049, clientName: "Siemens Healthineers", city: "Angeles", country: "Philippines"},
+    {clientCode: 4064, clientName: "Dis-Chem Pharmacies", city: "Angeles", country: "Philippines"},
+    {clientCode: 4166, clientName: "Impala Platinum Holdings", city: "Cebu", country: "Philippines"},
+    {clientCode: 4216, clientName: "Vodacom Group", city: "Angeles", country: "Philippines"},
+    {clientCode: 4218, clientName: "Checkers", city: "Manila", country: "Philippines"},
+    {clientCode: 4257, clientName: "Total Malaysia", city: "Kuala Lumpur", country: "Malaysia"},
+    {clientCode: 4252, clientName: "Choppies Enterprises", city: "Kuala Lumpur", country: "Malaysia"},
+    {clientCode: 4167, clientName: "Stanbic Bank Malaysia", city: "Kuala Lumpur", country: "Malaysia"}
+]);
+
+db.invoices.insertMany([
+    {invoicingDate: new Date("2021-01-02"), invoiceNumber: 10414, originWarehouse: "WHDUR", originCity: "Davao", originCountry: "Philippines", customerCode: 4014, invoiceValue: 1212.8, numberOfPackages: 3, grossWeight: 49.5, carrierCode: "6600879", transportType: "Urgent", contractedTerm: 7, collectionDate: new Date("2021-01-03"), deliveryDate: new Date("2021-01-13"), event: "Damaged"},
+    {invoicingDate: new Date("2021-01-04"), invoiceNumber: 10424, originWarehouse: "WHMAU", originCity: "Petaling Jaya", originCountry: "Malaysia", customerCode: 4013, invoiceValue: 1421.58, numberOfPackages: 1, grossWeight: 1.12, carrierCode: "6500948", transportType: "Conventional", contractedTerm: 2, collectionDate: new Date("2021-01-05"), deliveryDate: new Date("2021-01-11"), event: "Damaged"},
+    {invoicingDate: new Date("2021-01-10"), invoiceNumber: 10457, originWarehouse: "WHFRA", originCity: "George Town", originCountry: "Malaysia", customerCode: 4013, invoiceValue: 1952.78, numberOfPackages: 1, grossWeight: 4.842, carrierCode: "6500948", transportType: "Conventional", contractedTerm: 2, collectionDate: new Date("2021-01-11"), deliveryDate: new Date("2021-01-12"), event: "Damaged"},
+    {invoicingDate: new Date("2021-01-10"), invoiceNumber: 10458, originWarehouse: "WHMAU", originCity: "Petaling Jaya", originCountry: "Malaysia", customerCode: 4013, invoiceValue: 380.64, numberOfPackages: 1, grossWeight: 10.56, carrierCode: "6500948", transportType: "Conventional", contractedTerm: 12, collectionDate: new Date("2021-01-11"), deliveryDate: new Date("2021-01-15"), event: "Damaged"},
+    {invoicingDate: new Date("2022-05-20"), invoiceNumber: 12101, originWarehouse: "WHDUR", originCity: "Davao", originCountry: "Philippines", customerCode: 4167, invoiceValue: 1007.98, numberOfPackages: 1, grossWeight: 1.12, carrierCode: "6400835", transportType: "Conventional", contractedTerm: 5, collectionDate: new Date("2022-05-21"), deliveryDate: new Date("2022-05-25"), event: "None"},
+    {invoicingDate: new Date("2021-08-23"), invoiceNumber: 11159, originWarehouse: "WHJOH", originCity: "Manila", originCountry: "Philippines", customerCode: 4037, invoiceValue: 8331.33, numberOfPackages: 10, grossWeight: 47.489, carrierCode: "6100231", transportType: "Conventional", contractedTerm: 10, collectionDate: new Date("2021-08-23"), deliveryDate: null, event: "Loss"},
+    {invoicingDate: new Date("2021-09-14"), invoiceNumber: 11232, originWarehouse: "WHFRA", originCity: "George Town", originCountry: "Malaysia", customerCode: 4019, invoiceValue: 1876.82, numberOfPackages: 3, grossWeight: 24.2, carrierCode: "6500948", transportType: "Conventional", contractedTerm: 7, collectionDate: new Date("2021-09-15"), deliveryDate: null, event: "Loss"},
+    {invoicingDate: new Date("2021-09-17"), invoiceNumber: 11235, originWarehouse: "WHDUR", originCity: "Davao", originCountry: "Philippines", customerCode: 4033, invoiceValue: 1118.95, numberOfPackages: 1, grossWeight: 4.18, carrierCode: "6100231", transportType: "Conventional", contractedTerm: 12, collectionDate: new Date("2021-09-18"), deliveryDate: new Date("2021-09-27"), event: "None"},
+    {invoicingDate: new Date("2021-09-17"), invoiceNumber: 11237, originWarehouse: "WHDUR", originCity: "Davao", originCountry: "Philippines", customerCode: 4064, invoiceValue: 880.99, numberOfPackages: 1, grossWeight: 5.506, carrierCode: "6400835", transportType: "Conventional", contractedTerm: 2, collectionDate: new Date("2021-09-18"), deliveryDate: new Date("2021-09-19"), event: "None"},
+    {invoicingDate: new Date("2022-09-23"), invoiceNumber: 12745, originWarehouse: "WHCPT", originCity: "Cebu", originCountry: "Philippines", customerCode: 4216, invoiceValue: 1735.4, numberOfPackages: 1, grossWeight: 1.12, carrierCode: "6400835", transportType: "Conventional", contractedTerm: 10, collectionDate: new Date("2022-09-23"), deliveryDate: new Date("2022-09-27"), event: "None"},
+    {invoicingDate: new Date("2022-09-24"), invoiceNumber: 12755, originWarehouse: "WHJOH", originCity: "Manila", originCountry: "Philippines", customerCode: 4166, invoiceValue: 396.58, numberOfPackages: 1, grossWeight: 13.42, carrierCode: "6700091", transportType: "Conventional", contractedTerm: 3, collectionDate: new Date("2022-09-24"), deliveryDate: new Date("2022-09-30"), event: "None"},
+    {invoicingDate: new Date("2022-09-25"), invoiceNumber: 12764, originWarehouse: "WHJOH", originCity: "Manila", originCountry: "Philippines", customerCode: 4013, invoiceValue: 694.87, numberOfPackages: 1, grossWeight: 0.11, carrierCode: "6500948", transportType: "Conventional", contractedTerm: 2, collectionDate: new Date("2022-09-25"), deliveryDate: new Date("2022-10-04"), event: "None"},
+    {invoicingDate: new Date("2022-09-25"), invoiceNumber: 12766, originWarehouse: "WHCPT", originCity: "Cebu", originCountry: "Philippines", customerCode: 4022, invoiceValue: 1002.26, numberOfPackages: 1, grossWeight: 4.496, carrierCode: "6500948", transportType: "Conventional", contractedTerm: 5, collectionDate: new Date("2022-09-25"), deliveryDate: new Date("2022-10-04"), event: "None"},
+    {invoicingDate: new Date("2022-09-26"), invoiceNumber: 12772, originWarehouse: "WHCPT", originCity: "Cebu", originCountry: "Philippines", customerCode: 4049, invoiceValue: 7578.1, numberOfPackages: 4, grossWeight: 22.911, carrierCode: "6100231", transportType: "Conventional", contractedTerm: 2, collectionDate: new Date("2022-09-26"), deliveryDate: new Date("2022-09-29"), event: "None"},
+    {invoicingDate: new Date("2022-09-26"), invoiceNumber: 12774, originWarehouse: "WHJOH", originCity: "Manila", originCountry: "Philippines", customerCode: 4049, invoiceValue: 33.7, numberOfPackages: 1, grossWeight: 0.066, carrierCode: "6100231", transportType: "Conventional", contractedTerm: 5, collectionDate: new Date("2022-09-26"), deliveryDate: new Date("2022-10-06"), event: "None"},
+    {invoicingDate: new Date("2022-09-26"), invoiceNumber: 12776, originWarehouse: "WHJOH", originCity: "Manila", originCountry: "Philippines", customerCode: 4049, invoiceValue: 426.22, numberOfPackages: 1, grossWeight: 16.5, carrierCode: "6100231", transportType: "Conventional", contractedTerm: 4, collectionDate: new Date("2022-09-26"), deliveryDate: new Date("2022-10-02"), event: "None"},
+    {invoicingDate: new Date("2022-10-14"), invoiceNumber: 12852, originWarehouse: "WHJOH", originCity: "Manila", originCountry: "Philippines", customerCode: 4020, invoiceValue: 1600.38, numberOfPackages: 1, grossWeight: 1.12, carrierCode: "6500948", transportType: "Conventional", contractedTerm: 4, collectionDate: new Date("2022-10-14"), deliveryDate: new Date("2022-10-22"), event: "None"},
+    {invoicingDate: new Date("2022-10-14"), invoiceNumber: 12856, originWarehouse: "WHJOH", originCity: "Manila", originCountry: "Philippines", customerCode: 4218, invoiceValue: 2595.42, numberOfPackages: 1, grossWeight: 16.5, carrierCode: "6400835", transportType: "Conventional", contractedTerm: 11, collectionDate: new Date("2022-10-14"), deliveryDate: new Date("2022-10-15"), event: "None"},
+    {invoicingDate: new Date("2022-10-14"), invoiceNumber: 12857, originWarehouse: "WHCPT", originCity: "Cebu", originCountry: "Philippines", customerCode: 4013, invoiceValue: 7816.7, numberOfPackages: 13, grossWeight: 29.852, carrierCode: "6500948", transportType: "Conventional", contractedTerm: 11, collectionDate: new Date("2022-10-14"), deliveryDate: new Date("2022-10-18"), event: "None"},
+    {invoicingDate: new Date("2022-10-14"), invoiceNumber: 12861, originWarehouse: "WHCPT", originCity: "Cebu", originCountry: "Philippines", customerCode: 4019, invoiceValue: 1802.15, numberOfPackages: 3, grossWeight: 15.798, carrierCode: "6500948", transportType: "Conventional", contractedTerm: 3, collectionDate: new Date("2022-10-14"), deliveryDate: new Date("2022-10-21"), event: "None"},
+    {invoicingDate: new Date("2022-10-14"), invoiceNumber: 12863, originWarehouse: "WHDUR", originCity: "Davao", originCountry: "Philippines", customerCode: 4019, invoiceValue: 91.76, numberOfPackages: 1, grossWeight: 0.316, carrierCode: "6500948", transportType: "Conventional", contractedTerm: 8, collectionDate: new Date("2022-10-14"), deliveryDate: new Date("2022-10-21"), event: "None"},
+    {invoicingDate: new Date("2022-10-16"), invoiceNumber: 12870, originWarehouse: "WHDUR", originCity: "Davao", originCountry: "Philippines", customerCode: 4257, invoiceValue: 58.49, numberOfPackages: 1, grossWeight: 0.321, carrierCode: "6500948", transportType: "Conventional", contractedTerm: 9, collectionDate: new Date("2022-10-16"), deliveryDate: new Date("2022-10-21"), event: "None"},
+    {invoicingDate: new Date("2022-11-20"), invoiceNumber: 13030, originWarehouse: "WHCPT", originCity: "Cebu", originCountry: "Philippines", customerCode: 4252, invoiceValue: 12061.74, numberOfPackages: 7, grossWeight: 23.188, carrierCode: "6400835", transportType: "Conventional", contractedTerm: 7, collectionDate: new Date("2022-11-20"), deliveryDate: new Date("2022-11-27"), event: "None"}
+]);
