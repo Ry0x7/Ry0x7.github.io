@@ -152,9 +152,7 @@ description for each ArchiMate element:
 
 36. **Course of Action:**
     - *Description:* Represents a set of activities that the organization can follow to achieve specific goals.
-    - *L
-
-ayman's Term:* Describes the planned steps the organization will take to achieve something.
+    - *Layman's Term:* Describes the planned steps the organization will take to achieve something.
 
 **Physical Elements:**
 
